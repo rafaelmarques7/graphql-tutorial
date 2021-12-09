@@ -20,6 +20,8 @@ export default {
         authors: (parent) => {
             return dataSources.bookService.getBookAuthors(parent.id)
         },
-
+        publisher: (parent) => {
+            return dataSources.bookService.getBookPublisher(parent.id)
+        }
     }
 }

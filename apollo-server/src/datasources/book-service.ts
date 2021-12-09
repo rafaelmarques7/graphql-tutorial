@@ -48,6 +48,10 @@ export class BookService extends DataSource {
         );
     }
 
+    getPublisherAuthors(publisherId) {
+        return Promise.resolve(findPublisherAuthors(publisherId))
+    }
+
     createPublisher(publisherInput) {
         const publisher = Object.assign({}, publisherInput, { id: newId() });
         publishers.push(publisher);
@@ -130,6 +134,19 @@ function findAuthor(id) {
 
 function findPublisher(id) {
     return publishers.find(publisher => publisher.id === id);
+}
+
+function findPublisherAuthors(publisherId) {
+    const publisherBooks = books.filter(book => book.publisherId === publisherId)
+    const publisherBookIds = publisherBooks.map(book => book.id)
+    
+    const publisherAuthors = []
+    bookAuthors.forEach(author => {
+        if (publisherBookIds.includes(author.bookId)) {
+            publisherAuthors.push(findAuthor(author.authorId))
+        }
+    })
+    return publisherAuthors
 }
 
 function findBook(id) {
